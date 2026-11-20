@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Client Project Delivery & Milestone Portal | Apex AI Agency</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+    @media print {
+      .no-print { display: none !important; }
+      body { background: white !important; color: black !important; }
+      .print-shadow { box-shadow: none !important; }
+      .print-border { border: 1px solid #cbd5e1 !important; }
+    }
+  </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen selection:bg-indigo-600 selection:text-white pb-20">
+
+  <!-- Top Sticky Navigation Bar -->
+  <header class="no-print sticky top-0 z-50 bg-slate-950/90 backdrop-blur-md border-b border-slate-800 px-6 py-3.5">
+    <div class="max-w-5xl mx-auto flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="/" class="text-xs text-slate-400 hover:text-white flex items-center gap-1 transition">
+          <span>← Agency Command Center</span>
+        </a>
+        <span class="text-slate-700">|</span>
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+          Live Delivery Portal
+        </span>
+      </div>
+      <div class="flex items-center gap-3">
+        <button onclick="window.print()" class="px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold border border-slate-700 transition">
+          🖨️ Print Roadmap
+        </button>
+        <a id="btn-pm-wa" href="#" target="_blank" class="px-4 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-lg shadow-emerald-600/20">
+          <span>📱</span> WhatsApp Project Manager
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="max-w-5xl mx-auto px-4 md:px-6 pt-8 space-y-8">
+
+    <!-- Hero Card -->
+    <div class="bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950/50 border border-slate-800 rounded-3xl p-6 md:p-10 shadow-2xl relative overflow-hidden">
+      <div class="absolute -top-24 -right-24 w-72 h-72 bg-indigo-600/20 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
+        <div>
+          <div class="flex items-center gap-2 mb-2">
+            <span class="text-xs font-mono font-bold uppercase tracking-wider text-indigo-400" id="portal-client-name">...</span>
+            <span class="text-slate-600">•</span>
+            <span class="text-xs font-mono text-emerald-400 font-semibold" id="portal-tier">Growth Accelerator</span>
+          </div>
+          <h1 id="portal-project-title" class="text-2xl md:text-3xl font-extrabold text-white tracking-tight">...</h1>
+          <p id="portal-business-name" class="text-sm text-slate-400 mt-1">...</p>
+        </div>
+
+        <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 md:p-5 text-left md:text-right shrink-0 space-y-1">
+          <div class="text-[11px] font-mono text-slate-400 uppercase tracking-wider">Target Launch</div>
+          <div id="portal-launch-date" class="text-lg font-black text-indigo-400 font-mono">...</div>
+          <div class="text-xs text-slate-500">Agile Sprint Delivery Model</div>
+        </div>
+      </div>
+
+      <!-- Live Overall Progress Bar -->
+      <div class="mt-8 space-y-2 relative z-10">
+        <div class="flex justify-between items-center text-xs font-mono">
+          <span class="text-slate-300 font-semibold">Sprint Velocity & Milestone Progress</span>
+          <span id="portal-progress-num" class="font-extrabold text-indigo-400 text-sm">35%</span>
+        </div>
+        <div class="w-full h-3 bg-slate-800 rounded-full overflow-hidden p-0.5 border border-slate-700/60">
+          <div id="portal-progress-bar" class="h-full bg-gradient-to-r from-indigo-500 via-purple-500 to-emerald-400 rounded-full transition-all duration-700" style="width: 35%;"></div>
+        </div>
+      </div>
+
+      <!-- Key Project Assets & Links -->
+      <div class="mt-6 pt-6 border-t border-slate-800/80 flex flex-wrap items-center gap-3 relative z-10 text-xs">
+        <a id="portal-staging-link" href="#" target="_blank" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold transition flex items-center gap-1.5 shadow-sm">
+          <span>🌐</span> Open Staging Preview
+        </a>
+        <a id="portal-repo-link" href="#" target="_blank" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-mono transition border border-slate-700 flex items-center gap-1.5">
+          <span>📦</span> Git Code Repository
+        </a>
+        <a id="portal-onboarding-link" href="#" class="px-4 py-2 rounded-xl bg-purple-600/30 hover:bg-purple-600/50 text-purple-300 font-bold transition border border-purple-500/40 flex items-center gap-1.5 shadow-sm">
+          <span>📝</span> Specs & PRD Wizard
+        </a>
+        <span id="portal-invoice-badge" class="px-3 py-1.5 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-mono text-xs font-semibold">
+          Invoice: Paid
+        </span>
+      </div>
+    </div>
+
+    <!-- Engineering Squad & Lead Specialists (3D Avatars) -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div class="p-5 rounded-2xl bg-slate-950 border border-slate-800 flex items-start gap-3.5 hover:border-indigo-500/50 transition shadow-lg">
+        <img src="/assets/avatars/head_charlie.jpg" alt="Arjun Sharma" class="w-14 h-14 rounded-2xl object-cover border-2 border-indigo-500/40 shrink-0 shadow-md">
+        <div class="space-y-0.5">
+          <div class="flex items-center gap-1.5 text-[11px] font-bold text-indigo-400 font-mono">
+            <span>👨‍💻</span> Lead Tech Architect
+          </div>
+          <div class="text-sm font-black text-white">Arjun Sharma</div>
+          <p class="text-[11px] text-slate-400 leading-snug">Next.js 14, Cloud DevOps, Python APIs & Optimization</p>
+        </div>
+      </div>
+
+      <div class="p-5 rounded-2xl bg-slate-950 border border-slate-800 flex items-start gap-3.5 hover:border-pink-500/50 transition shadow-lg">
+        <img src="/assets/avatars/head_jordan.jpg" alt="Kabir Sen" class="w-14 h-14 rounded-2xl object-cover border-2 border-pink-500/40 shrink-0 shadow-md">
+        <div class="space-y-0.5">
+          <div class="flex items-center gap-1.5 text-[11px] font-bold text-pink-400 font-mono">
+            <span>🎨</span> Creative Director
+          </div>
+          <div class="text-sm font-black text-white">Kabir Sen</div>
+          <p class="text-[11px] text-slate-400 leading-snug">UI/UX Prototypes, Design Systems & Micro-interactions</p>
+        </div>
+      </div>
+
+      <div class="p-5 rounded-2xl bg-slate-950 border border-slate-800 flex items-start gap-3.5 hover:border-emerald-500/50 transition shadow-lg">
+        <img src="/assets/avatars/head_maya.jpg" alt="Neha Patel" class="w-14 h-14 rounded-2xl object-cover border-2 border-emerald-500/40 shrink-0 shadow-md">
+        <div class="space-y-0.5">
+          <div class="flex items-center gap-1.5 text-[11px] font-bold text-emerald-400 font-mono">
+            <span>🤖</span> Autonomous AI Specialist
+          </div>
+          <div class="text-sm font-black text-white">Neha Patel</div>
+          <p class="text-[11px] text-slate-400 leading-snug">LangGraph Multi-Agent Workflows & WhatsApp Lead Bots</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Approved Technical PRD (Product Requirements Document) Card -->
+    <div id="portal-prd-card" class="hidden bg-slate-950 border border-indigo-500/40 rounded-3xl p-6 md:p-8 space-y-4 shadow-xl">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
+        <div class="flex items-center gap-2.5">
+          <span class="text-xl">📄</span>
+          <div>
+            <h3 class="font-bold text-white text-base">Approved Technical PRD (Version 1.0)</h3>
+            <p class="text-xs text-slate-400 font-mono">Authored by Arjun Sharma (Lead Architect) • Architecture Baseline</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <a id="btn-edit-prd" href="#" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold border border-slate-700 transition">
+            ✏️ Edit Specs
+          </a>
+          <button onclick="togglePRDPreview()" id="btn-toggle-prd" class="px-3.5 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs transition">
+            View Full PRD ↓
+          </button>
+        </div>
+      </div>
+      <div id="portal-prd-content" class="hidden p-5 rounded-2xl bg-slate-900 border border-slate-800 text-xs text-slate-300 font-mono whitespace-pre-wrap max-h-96 overflow-y-auto leading-relaxed"></div>
+    </div>
+
+    <!-- Production Architecture & Starter Code Generator Card -->
+    <div class="bg-slate-950 border border-slate-800 rounded-3xl p-6 md:p-8 space-y-4 shadow-xl">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
+        <div>
+          <h3 class="font-bold text-white text-base flex items-center gap-2">
+            <span>💻</span> Production Architecture & Starter Code
+          </h3>
+          <p class="text-xs text-slate-400">Autonomous scaffolds generated by Engineering Squad for client handoff.</p>
+        </div>
+        <div class="flex items-center gap-2 flex-wrap">
+          <button onclick="generateCodeStarter('landing_page')" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-indigo-600 hover:text-white text-indigo-400 text-xs font-semibold border border-slate-700 transition">
+            🌐 Next.js Page
+          </button>
+          <button onclick="generateCodeStarter('ai_lead_bot')" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-emerald-600 hover:text-white text-emerald-400 text-xs font-semibold border border-slate-700 transition">
+            🤖 AI Lead Bot
+          </button>
+          <button onclick="generateCodeStarter('nextjs_architecture')" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-purple-600 hover:text-white text-purple-400 text-xs font-semibold border border-slate-700 transition">
+            🏗️ Architecture JSON
+          </button>
+        </div>
+      </div>
+
+      <div class="space-y-2">
+        <div class="flex items-center justify-between text-xs font-mono text-slate-400">
+          <span id="code-file-label">Ready to scaffold production files</span>
+          <button onclick="copyStarterCode()" class="text-indigo-400 hover:underline">📋 Copy Code</button>
+        </div>
+        <pre id="starter-code-box" class="p-4 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300 font-mono text-xs max-h-72 overflow-y-auto whitespace-pre leading-relaxed">// Click any of the buttons above to generate production-ready code.</pre>
+      </div>
+    </div>
+
+    <!-- Milestones Execution Roadmap -->
+    <div class="bg-slate-950 border border-slate-800 rounded-3xl p-6 md:p-8 space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800/80 pb-4">
+        <div>
+          <h2 class="text-lg font-bold text-white flex items-center gap-2">
+            <span>🗺️</span> Technical Milestones & Deliverables Roadmap
+          </h2>
+          <p class="text-xs text-slate-400 mt-0.5">Real-time build status tracking. Verified deliverables for each phase.</p>
+        </div>
+        <span class="text-xs font-mono text-slate-500">Autonomous Production Pipeline</span>
+      </div>
+
+      <!-- Milestones Timeline Container -->
+      <div id="milestones-timeline" class="space-y-4">
+        <!-- Injected via JS -->
+      </div>
+    </div>
+
+    <!-- Client Two-Way Review & Milestone Feedback Section -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+      <!-- Asset Vault & Uploads Card -->
+      <div class="bg-slate-950 border border-slate-800 rounded-3xl p-6 md:p-8 space-y-5">
+        <div class="flex items-center justify-between border-b border-slate-800/80 pb-3">
+          <div>
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <span>📂</span> Project Asset Vault
+            </h3>
+            <p class="text-xs text-slate-400">Share design files, logos, content docs or API keys.</p>
+          </div>
+          <span class="text-xs font-mono text-indigo-400 font-bold" id="assets-count-badge">0 Assets</span>
+        </div>
+
+        <!-- Add Asset Form -->
+        <form onsubmit="handleAssetSubmit(event)" class="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-4 space-y-3">
+          <div class="text-xs font-semibold text-slate-300">Attach New Asset / Link</div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <input type="text" id="asset-name" placeholder="Asset Name (e.g. SVG Logo)" required
+              class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500">
+            <select id="asset-type" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-slate-300 focus:outline-none focus:border-indigo-500">
+              <option value="logo">🎨 Brand Logo / Vector</option>
+              <option value="content_doc">📄 Content Document / Copy</option>
+              <option value="design_reference">🖼️ Figma / Reference</option>
+              <option value="credentials">🔑 Access / API Keys</option>
+              <option value="other">📁 Other Resource</option>
+            </select>
+          </div>
+          <input type="text" id="asset-url" placeholder="Resource Link (Google Drive, Figma, GitHub) or Note" required
+            class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500">
+          <div class="flex justify-end">
+            <button type="submit" id="btn-upload-asset" class="px-4 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs transition">
+              + Save to Vault
+            </button>
+          </div>
+        </form>
+
+        <!-- Assets List Container -->
+        <div id="assets-list" class="space-y-2 max-h-60 overflow-y-auto pr-1">
+          <!-- Injected via JS -->
+        </div>
+      </div>
+
+      <!-- Milestone Feedback & Revision Portal -->
+      <div class="bg-slate-950 border border-slate-800 rounded-3xl p-6 md:p-8 space-y-5">
+        <div class="flex items-center justify-between border-b border-slate-800/80 pb-3">
+          <div>
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <span>💬</span> Client Review & Sign-Off
+            </h3>
+            <p class="text-xs text-slate-400">Submit milestone approvals or request design revisions.</p>
+          </div>
+          <span class="text-xs font-mono text-emerald-400 font-bold" id="feedback-count-badge">0 Updates</span>
+        </div>
+
+        <!-- Feedback Form -->
+        <form onsubmit="handleFeedbackSubmit(event)" class="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-4 space-y-3">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <select id="fb-phase" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-slate-300 focus:outline-none focus:border-indigo-500">
+              <option value="1">Phase 1: Discovery & Architecture</option>
+              <option value="2">Phase 2: UI/UX & Wireframes</option>
+              <option value="3">Phase 3: Backend & AI Engine</option>
+              <option value="4">Phase 4: QA & Security Audit</option>
+              <option value="5">Phase 5: Cloud Deployment</option>
+            </select>
+            <select id="fb-type" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-slate-300 focus:outline-none focus:border-indigo-500">
+              <option value="approval">✅ Approve Milestone</option>
+              <option value="revision">⚠️ Request Revision</option>
+              <option value="general">💬 General Question / Note</option>
+            </select>
+          </div>
+          <textarea id="fb-message" rows="2" placeholder="Write your review, feedback or requested change..." required
+            class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"></textarea>
+          <div class="flex justify-end">
+            <button type="submit" id="btn-submit-fb" class="px-4 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition">
+              Submit Review to Squad
+            </button>
+          </div>
+        </form>
+
+        <!-- Feedback History List -->
+        <div id="feedback-list" class="space-y-2 max-h-60 overflow-y-auto pr-1">
+          <!-- Injected via JS -->
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Terms & SLA Guarantee -->
+    <div class="p-6 rounded-2xl bg-slate-950/60 border border-slate-800 text-xs text-slate-400 space-y-2 font-mono">
+      <div class="font-bold text-slate-300 uppercase tracking-wider text-[11px]">Apex AI Quality & SLA Guarantee</div>
+      <p class="leading-relaxed font-sans">
+        All code modules pass automated unit tests, strict TypeScript checks, and security audits before staging deployment.
+        Post-deployment, you receive 30 days of complimentary technical maintenance and server monitoring.
+      </p>
+    </div>
+
+  </main>
+
+  <script>
+    const pathParts = window.location.pathname.split('/');
+    const projectId = pathParts[pathParts.length - 1];
+
+    let currentProject = null;
+
+    async function loadProjectPortal() {
+      try {
+        const res = await fetch(`/api/leads/projects/${projectId}`);
+        const data = await res.json();
+
+        if (data.status === 'success' && data.project) {
+          currentProject = data.project;
+          renderProject(currentProject);
+        } else {
+          document.body.innerHTML = `
+            <div class="text-center py-24 text-slate-400 space-y-3">
+              <div class="text-5xl">🔍</div>
+              <h2 class="text-xl font-bold text-white">Project Portal Not Found</h2>
+              <p class="text-xs text-slate-500">Could not locate active project for ID: <span class="font-mono text-indigo-400">${projectId}</span></p>
+              <a href="/" class="mt-4 inline-block px-5 py-2.5 rounded-xl bg-indigo-600 text-white font-semibold text-xs">Return to Dashboard</a>
+            </div>
+          `;
+        }
+      } catch (err) {
+        console.error("loadProjectPortal error:", err);
+      }
+    }
+
+    function renderProject(p) {
+      document.title = `${p.business_name} - Delivery Portal | Apex AI Agency`;
+
+      document.getElementById('portal-client-name').innerText = p.client_name;
+      document.getElementById('portal-business-name').innerText = p.business_name;
+      document.getElementById('portal-project-title').innerText = p.project_title;
+      document.getElementById('portal-tier').innerText = p.project_tier || 'Growth Accelerator';
+      document.getElementById('portal-launch-date').innerText = p.target_launch_date_str || p.target_launch_date;
+
+      const pct = p.progress_percent || 35;
+      document.getElementById('portal-progress-num').innerText = `${pct}% Complete`;
+      document.getElementById('portal-progress-bar').style.width = `${pct}%`;
+
+      document.getElementById('portal-staging-link').href = p.staging_url || '#';
+      document.getElementById('portal-repo-link').href = p.repository_url || '#';
+      document.getElementById('portal-onboarding-link').href = `/onboarding/${p.id}`;
+      document.getElementById('btn-edit-prd').href = `/onboarding/${p.id}`;
+
+      if (p.prd_document) {
+        document.getElementById('portal-prd-card').classList.remove('hidden');
+        document.getElementById('portal-prd-content').textContent = p.prd_document;
+      } else {
+        document.getElementById('portal-prd-card').classList.add('hidden');
+      }
+
+      if (p.starter_code && p.starter_code.code) {
+        document.getElementById('starter-code-box').textContent = p.starter_code.code;
+        document.getElementById('code-file-label').innerText = `${p.starter_code.filename} (${p.starter_code.component_type})`;
+      }
+
+      if (p.invoice_number) {
+        document.getElementById('portal-invoice-badge').innerHTML = `
+          <a href="/invoice/${p.invoice_id || p.invoice_number}" target="_blank" class="hover:underline flex items-center gap-1">
+            <span>📄</span> Invoice ${p.invoice_number} (${p.payment_status ? p.payment_status.toUpperCase() : 'PAID'})
+          </a>
+        `;
+      }
+
+      // WhatsApp Project Manager Link
+      const waMsg = `Namaste! I am checking my project delivery portal for *${p.business_name}* (${p.project_title}). Could you provide a quick sprint update?`;
+      document.getElementById('btn-pm-wa').href = `https://wa.me/919876543210?text=${encodeURIComponent(waMsg)}`;
+
+      // Render Milestones
+      const container = document.getElementById('milestones-timeline');
+      container.innerHTML = '';
+
+      const milestones = Array.isArray(p.milestones) ? p.milestones : [];
+
+      milestones.forEach((m, idx) => {
+        const isDone = m.status === 'completed';
+        const isCurrent = m.status === 'in_progress';
+
+        let badge = `<span class="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-slate-800 text-slate-400">Upcoming</span>`;
+        let icon = `<span class="w-8 h-8 rounded-full bg-slate-800 text-slate-500 font-bold flex items-center justify-center text-xs shrink-0">${idx + 1}</span>`;
+        let cardBorder = "border-slate-800/80 bg-slate-900/40";
+
+        if (isDone) {
+          badge = `<span class="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">Completed</span>`;
+          icon = `<span class="w-8 h-8 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-sm shrink-0 shadow-md">✓</span>`;
+          cardBorder = "border-emerald-500/30 bg-emerald-950/10";
+        } else if (isCurrent) {
+          badge = `<span class="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30 animate-pulse">In Active Development (${m.progress || 60}%)</span>`;
+          icon = `<span class="w-8 h-8 rounded-full bg-indigo-600 text-white font-bold flex items-center justify-center text-xs shrink-0 shadow-lg shadow-indigo-600/40">${idx + 1}</span>`;
+          cardBorder = "border-indigo-500/40 bg-indigo-950/20 shadow-lg";
+        }
+
+        const div = document.createElement('div');
+        div.className = `p-5 rounded-2xl border ${cardBorder} flex flex-col md:flex-row md:items-center justify-between gap-4 transition`;
+        div.innerHTML = `
+          <div class="flex items-start gap-4">
+            ${icon}
+            <div class="space-y-1">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="text-xs font-mono text-slate-500">Phase ${idx + 1}</span>
+                <span class="text-slate-700">•</span>
+                ${badge}
+              </div>
+              <h3 class="font-bold text-white text-sm">${m.title}</h3>
+              <p class="text-xs text-slate-400 font-sans">${m.deliverable || ''}</p>
+              <div class="text-[11px] font-mono text-indigo-400/90 pt-1">
+                Lead: <span class="text-slate-300">${m.assigned_to || 'Engineering Squad'}</span> | Target: <span class="text-slate-300">${m.completion_date || 'In Sprint'}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2 self-end md:self-center shrink-0">
+            ${!isDone ? `
+              <button onclick="advanceMilestone(${m.id || idx + 1})" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-emerald-600 hover:text-white text-slate-300 text-xs font-semibold border border-slate-700 transition" title="Agency Control: Advance Phase">
+                Mark Complete ✓
+              </button>
+            ` : `
+              <span class="text-xs font-mono text-emerald-400 flex items-center gap-1 font-semibold">
+                <span>Verified</span> ✓
+              </span>
+            `}
+          </div>
+        `;
+        container.appendChild(div);
+      });
+
+      // Render Assets and Feedbacks
+      renderAssets(p.client_assets || []);
+      renderFeedbacks(p.client_feedback || []);
+    }
+
+    function renderAssets(assets) {
+      const badge = document.getElementById('assets-count-badge');
+      const container = document.getElementById('assets-list');
+      badge.innerText = `${assets.length} Asset${assets.length === 1 ? '' : 's'}`;
+      container.innerHTML = '';
+
+      if (assets.length === 0) {
+        container.innerHTML = `<div class="text-xs text-slate-500 py-3 text-center">No assets attached yet. Upload above!</div>`;
+        return;
+      }
+
+      assets.forEach(a => {
+        const typeEmoji = a.asset_type === 'logo' ? '🎨' : (a.asset_type === 'content_doc' ? '📄' : (a.asset_type === 'design_reference' ? '🖼️' : (a.asset_type === 'credentials' ? '🔑' : '📁')));
+        const item = document.createElement('div');
+        item.className = 'p-3 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-between text-xs';
+        const isUrl = a.asset_url_or_note && a.asset_url_or_note.startsWith('http');
+        item.innerHTML = `
+          <div class="flex items-center gap-2.5 overflow-hidden">
+            <span class="text-base shrink-0">${typeEmoji}</span>
+            <div class="truncate">
+              <div class="font-bold text-white truncate">${a.asset_name}</div>
+              <div class="text-[10px] font-mono text-slate-400 truncate">${a.created_at || 'Recent'} • By ${a.uploaded_by || 'Client'}</div>
+            </div>
+          </div>
+          <a href="${isUrl ? a.asset_url_or_note : '#'}" target="_blank" 
+            ${!isUrl ? `onclick="alert('Resource details: ' + decodeURIComponent('${encodeURIComponent(a.asset_url_or_note)}')); return false;"` : ''}
+            class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-indigo-600 hover:text-white text-indigo-400 font-mono text-[11px] shrink-0 transition">
+            ${isUrl ? 'Open Link ↗' : 'View Note'}
+          </a>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    function renderFeedbacks(feedbacks) {
+      const badge = document.getElementById('feedback-count-badge');
+      const container = document.getElementById('feedback-list');
+      badge.innerText = `${feedbacks.length} Update${feedbacks.length === 1 ? '' : 's'}`;
+      container.innerHTML = '';
+
+      if (feedbacks.length === 0) {
+        container.innerHTML = `<div class="text-xs text-slate-500 py-3 text-center">No reviews submitted yet. Use form above!</div>`;
+        return;
+      }
+
+      feedbacks.forEach(f => {
+        const isApprove = f.feedback_type === 'approval';
+        const isRev = f.feedback_type === 'revision';
+        const tag = isApprove ? '<span class="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">Approved</span>' :
+                    (isRev ? '<span class="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">Revision</span>' :
+                             '<span class="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">Question</span>');
+
+        const item = document.createElement('div');
+        item.className = 'p-3 rounded-xl bg-slate-900 border border-slate-800 space-y-1 text-xs';
+        item.innerHTML = `
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="font-mono text-slate-400 text-[11px]">Phase ${f.milestone_index}</span>
+              ${tag}
+            </div>
+            <span class="text-[10px] font-mono text-slate-500">${f.created_at || 'Just now'}</span>
+          </div>
+          <p class="text-slate-300 text-xs">${f.message}</p>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    async function handleAssetSubmit(e) {
+      e.preventDefault();
+      if (!currentProject) return;
+      const name = document.getElementById('asset-name').value.trim();
+      const type = document.getElementById('asset-type').value;
+      const url = document.getElementById('asset-url').value.trim();
+      const btn = document.getElementById('btn-upload-asset');
+
+      btn.disabled = true;
+      btn.innerText = 'Saving...';
+      try {
+        const res = await fetch('/api/leads/projects/upload-asset', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            project_id: currentProject.id,
+            asset_name: name,
+            asset_type: type,
+            asset_url_or_note: url,
+            uploaded_by: currentProject.client_name || 'Client'
+          })
+        });
+        const data = await res.json();
+        if (data.status === 'success') {
+          document.getElementById('asset-name').value = '';
+          document.getElementById('asset-url').value = '';
+          loadProjectPortal();
+        } else {
+          alert('Upload failed: ' + data.detail);
+        }
+      } catch (err) {
+        alert('Network error saving asset.');
+      } finally {
+        btn.disabled = false;
+        btn.innerText = '+ Save to Vault';
+      }
+    }
+
+    async function handleFeedbackSubmit(e) {
+      e.preventDefault();
+      if (!currentProject) return;
+      const phase = parseInt(document.getElementById('fb-phase').value, 10);
+      const type = document.getElementById('fb-type').value;
+      const msg = document.getElementById('fb-message').value.trim();
+      const btn = document.getElementById('btn-submit-fb');
+
+      btn.disabled = true;
+      btn.innerText = 'Submitting...';
+      try {
+        const res = await fetch('/api/leads/projects/submit-feedback', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            project_id: currentProject.id,
+            client_name: currentProject.client_name || 'Client',
+            milestone_index: phase,
+            feedback_type: type,
+            message: msg
+          })
+        });
+        const data = await res.json();
+        if (data.status === 'success') {
+          document.getElementById('fb-message').value = '';
+          alert('Review received! The engineering squad has been notified in real time.');
+          loadProjectPortal();
+        } else {
+          alert('Submission failed: ' + data.detail);
+        }
+      } catch (err) {
+        alert('Network error submitting feedback.');
+      } finally {
+        btn.disabled = false;
+        btn.innerText = 'Submit Review to Squad';
+      }
+    }
+    }
+
+    async function advanceMilestone(milestoneIndex) {
+      if (!currentProject) return;
+      if (!confirm(`Mark Phase ${milestoneIndex} as COMPLETED for ${currentProject.business_name}?`)) return;
+
+      try {
+        const res = await fetch('/api/leads/projects/update-milestone', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            project_id: currentProject.id,
+            milestone_index: milestoneIndex,
+            new_status: 'completed'
+          })
+        });
+        const data = await res.json();
+        if (data.status === 'success') {
+          loadProjectPortal();
+        } else {
+          alert('Error: ' + data.detail);
+        }
+      } catch (e) {
+        alert('Network error updating milestone.');
+      }
+    }
+
+    function togglePRDPreview() {
+      const el = document.getElementById('portal-prd-content');
+      const btn = document.getElementById('btn-toggle-prd');
+      if (el.classList.contains('hidden')) {
+        el.classList.remove('hidden');
+        btn.innerText = 'Hide PRD ↑';
+      } else {
+        el.classList.add('hidden');
+        btn.innerText = 'View Full PRD ↓';
+      }
+    }
+
+    async function generateCodeStarter(type) {
+      if (!currentProject) return;
+      document.getElementById('starter-code-box').textContent = "// Engineering Squad generating code scaffold...";
+      document.getElementById('code-file-label').innerText = `Generating ${type}...`;
+
+      try {
+        const res = await fetch('/api/leads/projects/generate-code-starter', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            project_id: currentProject.id,
+            component_type: type
+          })
+        });
+        const data = await res.json();
+        if (data.status === 'success') {
+          document.getElementById('starter-code-box').textContent = data.code;
+          document.getElementById('code-file-label').innerText = `${data.filename} (${data.component_type})`;
+        } else {
+          alert('Generation failed: ' + data.detail);
+        }
+      } catch (e) {
+        alert('Network error generating starter code.');
+      }
+    }
+
+    function copyStarterCode() {
+      const text = document.getElementById('starter-code-box').textContent;
+      navigator.clipboard.writeText(text);
+      alert('Starter code copied to clipboard!');
+    }
+
+    loadProjectPortal();
+  </script>
+</body>
+</html>

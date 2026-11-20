@@ -1,0 +1,8 @@
+{
+  "dependencies": ["."],
+  "graphs": {
+    "universal_agency": "./backend/app/graph/universal_engine.py:universal_graph",
+    "batch_outreach": "./backend/app/graph/workflow.py:agency_graph"
+  },
+  "env": ".env"
+}

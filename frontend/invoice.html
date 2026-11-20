@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GST Tax Invoice | Apex AI & IT Solutions</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+    @media print {
+      .no-print { display: none !important; }
+      body { background: white !important; color: black !important; }
+      .print-shadow { box-shadow: none !important; }
+      .print-border { border: 1px solid #cbd5e1 !important; }
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-900 min-h-screen selection:bg-indigo-600 selection:text-white pb-20">
+
+  <!-- Floating Sticky Action Bar (Hidden in Print) -->
+  <div class="no-print sticky top-0 z-50 bg-slate-900/95 backdrop-blur-md border-b border-slate-800 text-white px-6 py-3">
+    <div class="max-w-4xl mx-auto flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="/" class="text-xs text-slate-400 hover:text-white flex items-center gap-1 transition">
+          <span>← Back to Command Center</span>
+        </a>
+        <span class="text-slate-600">|</span>
+        <span id="nav-invoice-badge" class="px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
+          Payment Pending
+        </span>
+      </div>
+      <div class="flex items-center gap-3">
+        <button onclick="window.print()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold flex items-center gap-2 transition border border-slate-700 shadow-sm">
+          <span>🖨️ Print / Download PDF</span>
+        </button>
+        <button id="btn-mark-paid" onclick="markAsPaid()" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center gap-1.5 transition shadow-lg shadow-emerald-600/25">
+          <span>✅ Mark as Paid</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Invoice Card -->
+  <div class="max-w-4xl mx-auto px-4 md:px-6 pt-10">
+    <div id="invoice-card" class="bg-white border border-slate-200 rounded-3xl shadow-2xl p-8 md:p-14 print-shadow print-border space-y-10">
+
+      <!-- Header & Agency Identity -->
+      <div class="flex flex-col md:flex-row md:items-start justify-between gap-6 border-b border-slate-100 pb-8">
+        <div>
+          <div class="flex items-center gap-3 mb-2">
+            <div class="w-12 h-12 rounded-2xl bg-indigo-600 flex items-center justify-center text-white font-extrabold text-2xl shadow-lg shadow-indigo-600/30">
+              ⚡
+            </div>
+            <div>
+              <h1 class="text-2xl font-black text-slate-900 tracking-tight">Apex AI & IT Solutions</h1>
+              <p class="text-xs text-indigo-600 font-mono font-semibold">Flagship Technology & AI Engineering Studio</p>
+            </div>
+          </div>
+          <div class="text-xs text-slate-500 space-y-0.5 font-mono">
+            <p>GSTIN: <span class="text-slate-800 font-semibold">27AABCA1234D1ZM</span></p>
+            <p>SAC Code: <span class="text-slate-800 font-semibold">998314</span> (Information Technology & Software Services)</p>
+            <p>HQ: Tech Hub, Bandra-Kurla Complex, Mumbai, Maharashtra 400051</p>
+            <p>Support: <span class="text-indigo-600 font-semibold">contact@apexsolutions.ai</span> | +91 98765 43210</p>
+          </div>
+        </div>
+
+        <div class="text-left md:text-right space-y-1.5 font-mono text-xs bg-slate-50 p-4 rounded-2xl border border-slate-100">
+          <div class="text-[11px] uppercase tracking-wider text-slate-400 font-bold">Tax Invoice</div>
+          <div class="text-lg font-black text-slate-900" id="inv-number">INV-2026-....</div>
+          <div class="text-slate-500">Invoice Date: <span id="inv-issue-date" class="text-slate-900 font-semibold">...</span></div>
+          <div class="text-slate-500">Due Date: <span id="inv-due-date" class="text-rose-600 font-bold">...</span></div>
+          <div class="pt-1">
+            <span id="inv-status-pill" class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-amber-100 text-amber-800 border border-amber-200">
+              Pending
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bill To & Commercial Details -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 rounded-2xl bg-slate-50 border border-slate-100">
+        <div>
+          <div class="text-[11px] font-mono text-slate-400 uppercase tracking-wider font-semibold mb-1">Billed To (Client):</div>
+          <h2 id="client-name" class="text-lg font-bold text-slate-900">...</h2>
+          <div id="business-name" class="text-sm font-semibold text-indigo-600">...</div>
+          <div id="client-phone" class="text-xs text-slate-500 font-mono mt-1">...</div>
+          <div id="client-industry" class="text-xs text-slate-400 font-mono">...</div>
+        </div>
+        <div>
+          <div class="text-[11px] font-mono text-slate-400 uppercase tracking-wider font-semibold mb-1">Payment Method & Terms:</div>
+          <div class="text-sm font-bold text-slate-800">Instant UPI / IMPS / NEFT Direct Bank Transfer</div>
+          <div class="text-xs text-slate-600 font-mono mt-1">VPA: <span class="font-bold text-indigo-600">agency.growth@upi</span></div>
+          <div class="text-xs text-slate-500 mt-2">Terms: Milestone 1 Commencement. Full code repository & deployment access transferred upon clearance.</div>
+        </div>
+      </div>
+
+      <!-- Line Items Table -->
+      <div class="space-y-3">
+        <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider font-mono text-indigo-600">Services & Deliverables Breakdown</h3>
+        <div class="overflow-x-auto rounded-2xl border border-slate-200">
+          <table class="w-full text-left text-sm">
+            <thead class="bg-slate-100/75 text-xs font-mono text-slate-600 uppercase border-b border-slate-200">
+              <tr>
+                <th class="py-3.5 px-4 font-bold">#</th>
+                <th class="py-3.5 px-4 font-bold">Item & Description</th>
+                <th class="py-3.5 px-4 font-bold text-center">Qty</th>
+                <th class="py-3.5 px-4 font-bold text-right">Rate</th>
+                <th class="py-3.5 px-4 font-bold text-right">Amount (INR)</th>
+              </tr>
+            </thead>
+            <tbody id="line-items-body" class="divide-y divide-slate-100 font-mono text-xs">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Calculation & UPI Scan To Pay Section -->
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-8 pt-4">
+        
+        <!-- UPI QR Scan Card (Col 7) -->
+        <div class="md:col-span-7 bg-slate-900 text-white rounded-3xl p-6 shadow-xl flex flex-col md:flex-row items-center gap-6 border border-slate-800">
+          <div class="bg-white p-3 rounded-2xl shadow-md shrink-0">
+            <img id="upi-qr-image" src="" alt="UPI Scan to Pay QR Code" class="w-36 h-36 rounded-xl object-contain">
+          </div>
+          <div class="space-y-2 text-center md:text-left">
+            <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-indigo-500/20 text-indigo-300 text-[10px] font-mono uppercase font-bold border border-indigo-500/30">
+              <span>⚡ Live UPI Scan & Pay</span>
+            </div>
+            <h4 class="text-base font-extrabold text-white">Scan with Any UPI App</h4>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Google Pay, PhonePe, Paytm, or BHIM. Zero convenience fees. Instant ledger receipt confirmation.
+            </p>
+            <div class="pt-2 flex flex-wrap gap-2 justify-center md:justify-start">
+              <a id="btn-upi-mobile" href="#" class="px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition flex items-center gap-1">
+                <span>📲 Tap to Pay on Mobile</span>
+              </a>
+              <button onclick="navigator.clipboard.writeText('agency.growth@upi'); alert('UPI ID copied: agency.growth@upi')" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-mono border border-slate-700 transition">
+                📋 Copy UPI ID
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Totals Summary Table (Col 5) -->
+        <div class="md:col-span-5 space-y-3 font-mono">
+          <div class="bg-slate-50 rounded-2xl p-5 border border-slate-100 space-y-2.5 text-xs">
+            <div class="flex justify-between text-slate-600">
+              <span>Subtotal:</span>
+              <span id="subtotal-val" class="font-bold text-slate-900">...</span>
+            </div>
+            <div class="flex justify-between text-slate-600">
+              <span>CGST (9.0%):</span>
+              <span id="cgst-val" class="font-bold text-slate-900">...</span>
+            </div>
+            <div class="flex justify-between text-slate-600">
+              <span>SGST (9.0%):</span>
+              <span id="sgst-val" class="font-bold text-slate-900">...</span>
+            </div>
+            <div class="border-t border-slate-200 pt-2 flex justify-between text-sm">
+              <span class="font-extrabold text-slate-900 font-sans">Total Amount Due:</span>
+              <span id="grand-total-val" class="font-black text-indigo-600 text-base">...</span>
+            </div>
+          </div>
+
+          <div class="text-[11px] text-slate-400 font-sans leading-relaxed text-center md:text-right">
+            Includes all applicable statutory taxes under GST Act 2017. Computer-generated official tax invoice.
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Bank Transfer Details & Signoff -->
+      <div class="border-t border-slate-100 pt-6 grid grid-cols-1 md:grid-cols-2 gap-6 text-xs text-slate-500">
+        <div>
+          <div class="font-bold text-slate-800 uppercase tracking-wider font-mono text-[11px] mb-1">Corporate Bank Transfer (NEFT/RTGS/IMPS)</div>
+          <p class="font-mono">Bank Name: HDFC Bank Ltd</p>
+          <p class="font-mono">Account Name: Apex AI & IT Solutions Pvt Ltd</p>
+          <p class="font-mono">Account Number: 50200084920194</p>
+          <p class="font-mono">IFSC Code: HDFC0000240 (BKC Mumbai Branch)</p>
+        </div>
+        <div class="text-left md:text-right flex flex-col justify-end">
+          <div class="font-serif italic text-slate-800 text-sm mb-1">Authorized Signatory</div>
+          <div class="font-mono text-slate-700 font-semibold">Apex AI Executive Operations</div>
+          <div class="text-[10px] text-slate-400">Digitally Verified & Stamped Ledger</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // Extract invoice_id from path /invoice/{id}
+    const pathParts = window.location.pathname.split('/');
+    const invoiceId = pathParts[pathParts.length - 1] || 'INV-2026-001';
+
+    let currentInvoice = null;
+
+    async function loadInvoiceData() {
+      try {
+        const res = await fetch(`/api/leads/invoices/${invoiceId}`);
+        const data = await res.json();
+        
+        if (data.status === 'success' && data.invoice) {
+          currentInvoice = data.invoice;
+          renderInvoice(currentInvoice);
+        } else {
+          document.getElementById('invoice-card').innerHTML = `
+            <div class="text-center py-16">
+              <div class="text-5xl mb-4">🔍</div>
+              <h2 class="text-xl font-bold text-slate-900">Invoice Record Not Found</h2>
+              <p class="text-sm text-slate-500 mt-2">Could not locate invoice with ID: <span class="font-mono text-indigo-600">${invoiceId}</span></p>
+              <a href="/" class="mt-6 inline-block px-5 py-2.5 rounded-xl bg-indigo-600 text-white font-semibold text-xs">Return to Dashboard</a>
+            </div>
+          `;
+        }
+      } catch (err) {
+        console.error("Error loading invoice:", err);
+      }
+    }
+
+    function renderInvoice(inv) {
+      document.title = `Tax Invoice ${inv.invoice_number} | Apex AI & IT Solutions`;
+      
+      document.getElementById('inv-number').innerText = inv.invoice_number;
+      document.getElementById('inv-issue-date').innerText = inv.issue_date_str || inv.issue_date;
+      document.getElementById('inv-due-date').innerText = inv.due_date_str || inv.due_date;
+      
+      document.getElementById('client-name').innerText = inv.client_name;
+      document.getElementById('business-name').innerText = inv.business_name;
+      document.getElementById('client-phone').innerText = inv.mobile_number ? `Mobile / WhatsApp: ${inv.mobile_number}` : 'Direct Client Account';
+      document.getElementById('client-industry').innerText = inv.industry ? `Industry: ${inv.industry}` : '';
+
+      // Status Pill
+      const statusPill = document.getElementById('inv-status-pill');
+      const navBadge = document.getElementById('nav-invoice-badge');
+      const markPaidBtn = document.getElementById('btn-mark-paid');
+
+      if (inv.payment_status === 'paid') {
+        statusPill.className = "inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800 border border-emerald-200";
+        statusPill.innerText = "PAID & VERIFIED";
+        navBadge.className = "px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
+        navBadge.innerText = "Payment Received (PAID)";
+        markPaidBtn.style.display = 'none';
+      } else {
+        statusPill.className = "inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-amber-100 text-amber-800 border border-amber-200";
+        statusPill.innerText = "PAYMENT PENDING";
+      }
+
+      // Line items
+      const tbody = document.getElementById('line-items-body');
+      tbody.innerHTML = '';
+      const items = Array.isArray(inv.line_items) ? inv.line_items : [];
+
+      items.forEach((item, idx) => {
+        const tr = document.createElement('tr');
+        tr.className = idx % 2 === 0 ? "bg-white" : "bg-slate-50/50";
+        tr.innerHTML = `
+          <td class="py-3.5 px-4 font-bold text-slate-400">${idx + 1}</td>
+          <td class="py-3.5 px-4">
+            <div class="font-bold text-slate-800">${item.description}</div>
+            <div class="text-[11px] text-slate-400 mt-0.5 font-sans">Full source repository, tests, and cloud environment included.</div>
+          </td>
+          <td class="py-3.5 px-4 text-center font-bold text-slate-700">${item.quantity || 1}</td>
+          <td class="py-3.5 px-4 text-right text-slate-600">${item.rate || item.amount}</td>
+          <td class="py-3.5 px-4 text-right font-extrabold text-slate-900">${item.amount}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      // Totals
+      document.getElementById('subtotal-val').innerText = inv.subtotal;
+      
+      // Calculate half CGST half SGST
+      const cleanTax = parseInt((inv.tax_amount || '0').replace(/[^0-9]/g, '')) || 0;
+      const halfTax = Math.round(cleanTax / 2);
+      document.getElementById('cgst-val').innerText = `₹${halfTax.toLocaleString('en-IN')}`;
+      document.getElementById('sgst-val').innerText = `₹${halfTax.toLocaleString('en-IN')}`;
+      document.getElementById('grand-total-val').innerText = inv.total_amount;
+
+      // UPI QR Code
+      const qrImg = document.getElementById('upi-qr-image');
+      if (inv.upi_qr_url) {
+        qrImg.src = inv.upi_qr_url;
+      }
+
+      // UPI Mobile Link
+      const cleanTotal = parseInt((inv.total_amount || '0').replace(/[^0-9]/g, '')) || 0;
+      const upiMobileUrl = `upi://pay?pa=agency.growth@upi&pn=Apex%20AI%20Solutions&am=${cleanTotal}&cu=INR&tn=${encodeURIComponent(inv.invoice_number)}`;
+      document.getElementById('btn-upi-mobile').href = upiMobileUrl;
+    }
+
+    async function markAsPaid() {
+      if (!currentInvoice) return;
+      if (!confirm(`Mark invoice ${currentInvoice.invoice_number} as PAID? This will update the client CRM record to 'deal_won'.`)) {
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/leads/invoices/mark-paid', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ invoice_id: currentInvoice.id || currentInvoice.invoice_number })
+        });
+        const data = await res.json();
+        if (data.status === 'success') {
+          alert(`Success! Invoice ${currentInvoice.invoice_number} is now marked as PAID.`);
+          loadInvoiceData();
+        } else {
+          alert('Error: ' + (data.detail || 'Could not update payment status.'));
+        }
+      } catch (e) {
+        alert('Network error marking invoice as paid.');
+      }
+    }
+
+    loadInvoiceData();
+  </script>
+</body>
+</html>

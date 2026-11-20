@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  # 1. PostgreSQL Database (agency_master)
+  db:
+    image: postgres:16-alpine
+    container_name: agency_postgres
+    restart: always
+    environment:
+      POSTGRES_DB: agency_master
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Rajesh@123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/1_schema.sql
+      - ./database/seed_data.sql:/docker-entrypoint-initdb.d/2_seed.sql
+
+  # 2. AI Agent Agency Backend (LangGraph + FastAPI)
+  agency_backend:
+    build: .
+    container_name: agency_engine
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=agency_master
+      - DB_USER=postgres
+      - DB_PASSWORD=Rajesh@123
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:

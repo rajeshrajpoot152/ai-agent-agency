@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Client Technical Onboarding & PRD Generator | Apex AI Agency</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen selection:bg-indigo-600 selection:text-white pb-20">
+
+  <!-- Top Sticky Navigation Bar -->
+  <header class="sticky top-0 z-50 bg-slate-950/90 backdrop-blur-md border-b border-slate-800 px-6 py-3.5">
+    <div class="max-w-4xl mx-auto flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="/" class="text-xs text-slate-400 hover:text-white flex items-center gap-1 transition">
+          <span>← Agency Command Center</span>
+        </a>
+        <span class="text-slate-700">|</span>
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+          Step 1: Technical Onboarding
+        </span>
+      </div>
+      <div class="flex items-center gap-3">
+        <a id="btn-back-portal" href="#" class="px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold border border-slate-700 transition">
+          View Delivery Portal 🚀
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-4 md:px-6 pt-8 space-y-8">
+
+    <!-- Header Banner -->
+    <div class="bg-gradient-to-br from-slate-900 via-indigo-950/40 to-slate-900 border border-slate-800 rounded-3xl p-6 md:p-10 shadow-2xl relative overflow-hidden">
+      <div class="absolute -top-24 -right-24 w-72 h-72 bg-indigo-600/20 rounded-full blur-3xl pointer-events-none"></div>
+      
+      <div class="space-y-3 relative z-10">
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-mono font-bold uppercase tracking-wider text-indigo-400" id="onb-client-header">...</span>
+          <span class="text-slate-600">•</span>
+          <span class="text-xs font-mono text-emerald-400 font-semibold">Agile Architecture Sprint</span>
+        </div>
+        <h1 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight">Project Onboarding & Technical Specification</h1>
+        <p class="text-xs md:text-sm text-slate-400 max-w-2xl">
+          Please fill out your project details. Once submitted, our AI Architect (Arjun Sharma) will automatically generate your complete <strong>Product Requirements Document (PRD v1.0)</strong> and initialize sprint milestones.
+        </p>
+      </div>
+    </div>
+
+    <!-- Onboarding Form Container -->
+    <form id="onboarding-form" onsubmit="handleOnboardingSubmit(event)" class="bg-slate-900/60 border border-slate-800 rounded-3xl p-6 md:p-8 space-y-8 shadow-xl">
+
+      <!-- Section 1: Brand & Business Identity -->
+      <div class="space-y-4">
+        <div class="border-b border-slate-800 pb-2">
+          <h2 class="text-base font-bold text-white flex items-center gap-2">
+            <span>🎨</span> 1. Brand & Business Identity
+          </h2>
+          <p class="text-xs text-slate-400">Core names, palette, and visual identity guidelines.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="space-y-1">
+            <label class="text-xs font-mono text-slate-300">Brand / Business Name</label>
+            <input type="text" id="onb-brand-name" required class="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white focus:outline-none focus:border-indigo-500">
+          </div>
+          <div class="space-y-1">
+            <label class="text-xs font-mono text-slate-300">Brand Tagline / Hook</label>
+            <input type="text" id="onb-tagline" placeholder="e.g. Next-Gen Cloud Solutions for Fast Teams" class="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white focus:outline-none focus:border-indigo-500">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="space-y-1">
+            <label class="text-xs font-mono text-slate-300">Primary Brand Colors (Hex Codes)</label>
+            <input type="text" id="onb-colors" value="#4F46E5, #06B6D4" class="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white focus:outline-none focus:border-indigo-500">
+          </div>
+          <div class="space-y-1">
+            <label class="text-xs font-mono text-slate-300">Logo File Link or Note</label>
+            <input type="text" id="onb-logo-url" placeholder="Google Drive, Dropbox, or Figma Link" class="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white focus:outline-none focus:border-indigo-500">
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 2: Audience & Competitors -->
+      <div class="space-y-4">
+        <div class="border-b border-slate-800 pb-2">
+          <h2 class="text-base font-bold text-white flex items-center gap-2">
+            <span>🎯</span> 2. Target Audience & Competitor Benchmarks
+          </h2>
+          <p class="text-xs text-slate-400">Help our team reverse-engineer industry leaders for maximum conversion.</p>
+        </div>
+
+        <div class="space-y-1">
+          <label class="text-xs font-mono text-slate-300">Target Audience Description</label>
+          <input type="text" id="onb-audience" placeholder="e.g. B2B enterprise tech buyers, young urban fitness enthusiasts aged 22-40" class="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white focus:outline-none focus:border-indigo-500">
+        </div>
+
+        <div class="space-y-1">
+          <label class="text-xs font-mono text-slate-300">Competitor Websites / Reference URLs (comma separated)</label>
+          <input type="text" id="onb-competitors" placeholder="e.g. stripe.com, vercel.com, linear.app" class="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white focus:outline-none focus:border-indigo-500">
+        </div>
+      </div>
+
+      <!-- Section 3: Feature Scope & Deliverables -->
+      <div class="space-y-4">
+        <div class="border-b border-slate-800 pb-2">
+          <h2 class="text-base font-bold text-white flex items-center gap-2">
+            <span>⚡</span> 3. Core Functional Feature Checklist
+          </h2>
+          <p class="text-xs text-slate-400">Select all features required for this delivery sprint.</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+          <label class="flex items-center gap-2.5 p-3 rounded-xl bg-slate-950 border border-slate-800 cursor-pointer hover:border-indigo-500 transition">
+            <input type="checkbox" name="feature" value="High-Speed Responsive Next.js Web App" checked class="rounded bg-slate-800 text-indigo-600 focus:ring-0">
+            <span>🌐 High-Speed Responsive Web App</span>
+          </label>
+          <label class="flex items-center gap-2.5 p-3 rounded-xl bg-slate-950 border border-slate-800 cursor-pointer hover:border-indigo-500 transition">
+            <input type="checkbox" name="feature" value="24/7 WhatsApp AI Sales Closer Bot" checked class="rounded bg-slate-800 text-indigo-600 focus:ring-0">
+            <span>🤖 24/7 WhatsApp AI Sales Bot</span>
+          </label>
+          <label class="flex items-center gap-2.5 p-3 rounded-xl bg-slate-950 border border-slate-800 cursor-pointer hover:border-indigo-500 transition">
+            <input type="checkbox" name="feature" value="Payment Gateway (UPI QR & Credit Card Checkout)" checked class="rounded bg-slate-800 text-indigo-600 focus:ring-0">
+            <span>💳 Payment Gateway & UPI Checkout</span>
+          </label>
+          <label class="flex items-center gap-2.5 p-3 rounded-xl bg-slate-950 border border-slate-800 cursor-pointer hover:border-indigo-500 transition">
+            <input type="checkbox" name="feature" value="Codex SEO & Generative Engine Optimization (GEO)" checked class="rounded bg-slate-800 text-indigo-600 focus:ring-0">
+            <span>🔍 Codex SEO & AI Search (GEO)</span>
+          </label>
+          <label class="flex items-center gap-2.5 p-3 rounded-xl bg-slate-950 border border-slate-800 cursor-pointer hover:border-indigo-500 transition">
+            <input type="checkbox" name="feature" value="Automated CRM Lead Ingestion & Webhook Sync" checked class="rounded bg-slate-800 text-indigo-600 focus:ring-0">
+            <span>📊 Automated CRM & Webhook Sync</span>
+          </label>
+          <label class="flex items-center gap-2.5 p-3 rounded-xl bg-slate-950 border border-slate-800 cursor-pointer hover:border-indigo-500 transition">
+            <input type="checkbox" name="feature" value="Custom Admin Dashboard & Analytics" checked class="rounded bg-slate-800 text-indigo-600 focus:ring-0">
+            <span>📈 Client Admin Dashboard</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Section 4: Special Requirements -->
+      <div class="space-y-4">
+        <div class="border-b border-slate-800 pb-2">
+          <h2 class="text-base font-bold text-white flex items-center gap-2">
+            <span>📝</span> 4. Special Instructions & Target Launch Date
+          </h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="space-y-1">
+            <label class="text-xs font-mono text-slate-300">Target Launch Date</label>
+            <input type="date" id="onb-target-date" class="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white focus:outline-none focus:border-indigo-500">
+          </div>
+          <div class="space-y-1">
+            <label class="text-xs font-mono text-slate-300">Tech Stack Preference</label>
+            <input type="text" id="onb-tech" value="Next.js 14, Tailwind CSS, Python FastAPI, PostgreSQL" class="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white focus:outline-none focus:border-indigo-500">
+          </div>
+        </div>
+
+        <div class="space-y-1">
+          <label class="text-xs font-mono text-slate-300">Special Notes or Custom Functionality</label>
+          <textarea id="onb-notes" rows="3" placeholder="Any specific requirements, domain names, or integrations..." class="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white focus:outline-none focus:border-indigo-500"></textarea>
+        </div>
+      </div>
+
+      <!-- Submit Action -->
+      <div class="pt-4 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="text-xs text-slate-400 font-mono">
+          🔒 Secure 256-bit encrypted submission to Engineering Squad
+        </div>
+        <button type="submit" id="btn-submit-onb" class="w-full sm:w-auto px-8 py-3 rounded-2xl bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 hover:opacity-95 text-white font-extrabold text-sm shadow-xl shadow-indigo-600/30 transition">
+          🚀 Submit Onboarding & Generate PRD →
+        </button>
+      </div>
+
+    </form>
+
+    <!-- PRD Result Container (Hidden until generated) -->
+    <div id="prd-result-container" class="hidden bg-slate-900 border border-indigo-500/40 rounded-3xl p-6 md:p-8 space-y-6 shadow-2xl">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+        <div>
+          <span class="px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+            ✓ Architecture Baseline v1.0 Ready
+          </span>
+          <h2 class="text-xl font-black text-white mt-1">Generated Product Requirements Document (PRD)</h2>
+        </div>
+        <a id="btn-go-to-portal-prd" href="#" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-lg transition">
+          Open Live Portal →
+        </a>
+      </div>
+
+      <pre id="prd-text-preview" class="p-5 rounded-2xl bg-slate-950 border border-slate-800 text-slate-300 font-mono text-xs whitespace-pre-wrap leading-relaxed max-h-[500px] overflow-y-auto"></pre>
+    </div>
+
+  </main>
+
+  <script>
+    const pathParts = window.location.pathname.split('/');
+    const projectId = pathParts[pathParts.length - 1];
+
+    async function loadOnboarding() {
+      try {
+        const res = await fetch(`/api/leads/projects/${projectId}`);
+        const data = await res.json();
+        if (data.status === 'success' && data.project) {
+          const p = data.project;
+          document.getElementById('onb-client-header').innerText = `${p.client_name} • ${p.business_name}`;
+          document.getElementById('onb-brand-name').value = p.business_name;
+          document.getElementById('btn-back-portal').href = `/portal/${projectId}`;
+          document.getElementById('btn-go-to-portal-prd').href = `/portal/${projectId}`;
+
+          if (p.onboarding_data && p.onboarding_data.brand_name) {
+            const ob = p.onboarding_data;
+            if (ob.tagline) document.getElementById('onb-tagline').value = ob.tagline;
+            if (ob.brand_colors) document.getElementById('onb-colors').value = ob.brand_colors;
+            if (ob.logo_url_or_note) document.getElementById('onb-logo-url').value = ob.logo_url_or_note;
+            if (ob.target_audience) document.getElementById('onb-audience').value = ob.target_audience;
+            if (ob.competitor_websites) document.getElementById('onb-competitors').value = ob.competitor_websites;
+          }
+
+          if (p.prd_document) {
+            document.getElementById('prd-result-container').classList.remove('hidden');
+            document.getElementById('prd-text-preview').textContent = p.prd_document;
+          }
+        }
+      } catch (e) {
+        console.error("loadOnboarding error:", e);
+      }
+    }
+
+    async function handleOnboardingSubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById('btn-submit-onb');
+      btn.disabled = true;
+      btn.innerText = 'Analyzing & Generating Technical PRD...';
+
+      const checkedFeatures = [];
+      document.querySelectorAll('input[name="feature"]:checked').forEach(c => checkedFeatures.push(c.value));
+
+      const payload = {
+        project_id: projectId,
+        brand_name: document.getElementById('onb-brand-name').value.trim(),
+        tagline: document.getElementById('onb-tagline').value.trim(),
+        brand_colors: document.getElementById('onb-colors').value.trim(),
+        logo_url_or_note: document.getElementById('onb-logo-url').value.trim(),
+        target_audience: document.getElementById('onb-audience').value.trim(),
+        competitor_websites: document.getElementById('onb-competitors').value.trim(),
+        must_have_features: checkedFeatures,
+        target_launch_date: document.getElementById('onb-target-date').value || null,
+        tech_preferences: document.getElementById('onb-tech').value.trim(),
+        special_requirements: document.getElementById('onb-notes').value.trim()
+      };
+
+      try {
+        const res = await fetch(`/api/leads/projects/${projectId}/submit-onboarding`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (data.status === 'success') {
+          alert('🎉 Technical PRD v1.0 Generated Successfully! The team has received project specs.');
+          loadOnboarding();
+          document.getElementById('prd-result-container').scrollIntoView({ behavior: 'smooth' });
+        } else {
+          alert('Error: ' + data.detail);
+        }
+      } catch (err) {
+        alert('Submission error: ' + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerText = '🚀 Submit Onboarding & Generate PRD →';
+      }
+    }
+
+    loadOnboarding();
+  </script>
+</body>
+</html>
