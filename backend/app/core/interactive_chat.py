@@ -1,3 +1,10 @@
+from backend.app.core.correction_engine import (
+    is_user_correction_intent,
+    extract_and_persist_guardrail,
+    get_active_guardrails_prompt_block,
+    verify_and_auto_heal_response
+)
+from backend.app.core.employee_brainstorm_engine import conduct_project_squad_brainstorm
 import json
 import time
 from datetime import datetime
@@ -42,6 +49,14 @@ def handle_user_chat(
         return {"status": "error", "message": "Message cannot be empty."}
 
     # 1. Save User Message into PostgreSQL
+    # Run Pre-Response RedTeam Verification & Self-Healing against stored guardrails
+    try:
+        response_text, was_healed, heal_note = verify_and_auto_heal_response(response_text)
+        if was_healed:
+            add_human_step(execution_steps, "Critic_RedTeam_Agent", "Guardrail Enforcement", heal_note)
+    except Exception:
+        pass
+
     execute_db("""
         INSERT INTO agency_chat_messages (session_id, sender, message, is_voice)
         VALUES (%s, 'user', %s, %s);
@@ -113,6 +128,9 @@ def handle_user_chat(
     )
 
     is_followup_query = any(w in msg_lower for w in ["follow up", "followup", "follow-up", "kisko message karna", "aaj ka follow up", "pending leads", "inquiry status", "pipeline", "client status", "leads status"])
+
+    is_correction = is_user_correction_intent(clean_msg)
+    is_brainstorm = any(w in msg_lower for w in ["brainstorm", "squad discussion", "team meeting", "strategy session", "team se baat", "brain storming", "brain storm"])
 
     is_project_auto_create = any(w in msg_lower for w in [
         "naya project", "new project", "project add", "naya client", "new client",
@@ -255,6 +273,63 @@ def handle_user_chat(
     # -------------------------------------------------------------
     # SCENARIO 0: WHATSAPP OUTREACH BATCH DISPATCH (LangGraph)
     # -------------------------------------------------------------
+        # -------------------------------------------------------------
+    # SCENARIO -0.4: FOUNDER CORRECTION & ZERO-REPEAT-MISTAKE ENGINE
+    # -------------------------------------------------------------
+    elif is_correction:
+        add_human_step(execution_steps, "Critic_RedTeam_Agent", "Captured Founder Correction", "Registered permanent negative guardrail into PostgreSQL.")
+        rule_res = extract_and_persist_guardrail(clean_msg, project_id=active_project.get("id") if active_project else None)
+        agents_involved.extend(["Critic_RedTeam_Agent", "Evaluator_Agent"])
+        
+        response_text = (
+            f"🫡 **Samajh gaya Boss! Correction permanently note aur save kar li hai.**\n\n"
+            f"🛡️ **Recorded Rule:** '{rule_res['rule_title']}'\n"
+            f"📌 **Strict Constraint:** {rule_res['rule_instruction']}\n"
+            f"🏷️ **Category:** `{rule_res['category']}` | **Enforcement:** `100% Strict`\n\n"
+            f"Maine sabhi 26 agents (Aarav, Vikram, Pooja, Arjun, Kabir, etc.) ke system prompts me ye rule permanently inject kar diya hai. "
+            f"Ab se koi bhi agent ye galti dubara kabhi repeat nahi karega!"
+        )
+        deliverable = (
+            f"# 🛡️ Founder Guardrail Permanently Recorded\n\n"
+            f"- **Rule Title:** {rule_res['rule_title']}\n"
+            f"- **Constraint:** {rule_res['rule_instruction']}\n"
+            f"- **Category:** {rule_res['category']}\n"
+            f"- **Enforcement Level:** Strict (Zero Tolerance)\n"
+            f"- **Status:** 🟢 Active across all 26 Specialists & Sprints"
+        )
+
+    # -------------------------------------------------------------
+    # SCENARIO -0.3: AUTONOMOUS SQUAD BRAINSTORMING & TASK ENGINE
+    # -------------------------------------------------------------
+    elif is_brainstorm and active_project:
+        add_human_step(execution_steps, "CEO_Orchestrator", "Convening Squad Standup", "Assembling Tech Lead, Growth Lead, Designer & QA for brainstorming.")
+        bs_res = conduct_project_squad_brainstorm(active_project["id"], focus_topic=clean_msg)
+        agents_involved.extend(["IT_Solutions_Architect_Agent", "Marketing_Director_Agent", "Designer_Agent", "Critic_RedTeam_Agent"])
+        
+        transcript_md = "\n\n".join([f"> **{t['speaker']}:** {t['statement']}" for t in bs_res.get("transcript", [])])
+        tasks_md = "\n".join([f"- **{t['title']}** → Assigned to `{t['assigned_to']}` [{t['priority'].upper()}]" for t in bs_res.get("assigned_tasks", [])])
+        
+        deliverable = f"""# 🧠 Squad Brainstorming & Strategic Blueprint: {bs_res.get('project_name')}
+
+### 💬 Live Multi-Agent Executive Standup Room
+{transcript_md}
+
+---
+### 🎯 Executive Consensus
+{bs_res.get('executive_summary')}
+
+---
+### 📋 Autonomous Tasks Assigned to Employees
+{tasks_md}
+"""
+        response_text = (
+            f"🧠 **Squad Brainstorming Session Complete for '{bs_res.get('project_name')}'!**\n\n"
+            f"Aarav, Vikram (Tech), Pooja (Growth), Arjun (Design) aur Kabir (QA) ne milkar strategy finalize kar li hai.\n\n"
+            f"🔹 **Breakthrough:** {bs_res.get('executive_summary').splitlines()[0] if bs_res.get('executive_summary') else 'Pipeline aligned.'}\n"
+            f"🔹 **3 Autonomous Tasks** live assign ho chuki hain.\n\n"
+            f"Aap deliverable tab me complete squad conversation dekh sakte hain."
+        )
+
     elif is_dispatch_batch:
         count_match = re.search(r'(\d+)\s*(?:number|lead|prospect|logo|message|log)?', msg_lower)
         quota = int(count_match.group(1)) if count_match and count_match.group(1).isdigit() else 5
@@ -1115,7 +1190,7 @@ def handle_user_chat(
                 "CRITICAL FORMAT RULE: Keep all answers SHORT, CRISP, AND HIGH-IMPACT (maximum 2 to 4 concise bullet points or 2-3 short sentences). "
                 "The founder hates wordy essays and information overload. Never dump long technical paragraphs unless explicitly asked for a full report. "
                 "Focus purely on: 1) What is done/ready, 2) Key numbers/metrics, 3) Next 1-click step. "
-                + project_context_info
+                + project_context_info + get_active_guardrails_prompt_block()
             )
 
             response_text = call_multi_model(

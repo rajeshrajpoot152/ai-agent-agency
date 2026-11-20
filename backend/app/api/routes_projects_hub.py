@@ -629,3 +629,47 @@ def get_market_spy_endpoint(project_id: str):
     """
     from backend.app.core.automations_engine import get_market_spy_intelligence
     return get_market_spy_intelligence(project_id)
+
+
+# -------------------------------------------------------------
+# 11. AUTONOMOUS EMPLOYEE SQUAD BRAINSTORMING & TASK ENGINE
+# -------------------------------------------------------------
+class BrainstormRequest(BaseModel):
+    topic: Optional[str] = None
+
+@router.post("/{project_id}/brainstorm")
+def brainstorm_squad_endpoint(project_id: str, req: BrainstormRequest = None):
+    """
+    Executes multi-agent executive squad brainstorming for the active project
+    (Tech Lead, Growth Lead, Creative Lead, QA Officer, CEO).
+    """
+    from backend.app.core.employee_brainstorm_engine import conduct_project_squad_brainstorm
+    topic = req.topic if req else None
+    return conduct_project_squad_brainstorm(project_id, focus_topic=topic)
+
+# -------------------------------------------------------------
+# 12. ZERO-REPEAT-MISTAKE & FOUNDER GUARDRAILS ENGINE
+# -------------------------------------------------------------
+class AddGuardrailRequest(BaseModel):
+    rule_text: str
+    category: Optional[str] = "workflow"
+
+@router.get("/guardrails/list")
+def list_guardrails_endpoint():
+    """Returns all active negative guardrails and learned rules."""
+    from backend.app.core.database import query_db
+    rules = query_db("SELECT id, rule_title, rule_instruction, category, enforcement_level, created_at FROM negative_guardrails ORDER BY created_at DESC;")
+    return {"status": "success", "count": len(rules), "guardrails": rules}
+
+@router.post("/guardrails/create")
+def create_guardrail_endpoint(req: AddGuardrailRequest):
+    """Allows founder to record a correction or strict rule."""
+    from backend.app.core.correction_engine import extract_and_persist_guardrail
+    return extract_and_persist_guardrail(req.rule_text)
+
+@router.delete("/guardrails/{rule_id}")
+def delete_guardrail_endpoint(rule_id: str):
+    """Deletes or archives a guardrail."""
+    from backend.app.core.database import execute_db
+    execute_db("DELETE FROM negative_guardrails WHERE id = %s;", (rule_id,))
+    return {"status": "success", "message": "Rule removed from active guardrails."}
