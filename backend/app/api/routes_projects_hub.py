@@ -573,3 +573,59 @@ def add_team_member(req: CreateTeamMemberRequest):
     """, (req.full_name, req.email, req.role, json.dumps(req.assigned_projects)))
 
     return {"status": "success", "message": f"Team member {req.full_name} added and delegated successfully!"}
+
+
+# -------------------------------------------------------------
+# 7. AUTOMATION 1: AUTO-LEAD PROSPECTING ENGINE
+# -------------------------------------------------------------
+class AutoHuntLeadsRequest(BaseModel):
+    count: int = 5
+    location: Optional[str] = "India / Global"
+
+@router.post("/{project_id}/leads/auto-hunt")
+def auto_hunt_leads_endpoint(project_id: str, req: AutoHuntLeadsRequest):
+    """
+    Autonomously hunts, qualifies & inserts verified B2B/B2C leads
+    strictly into the active project database container (Zero Leakage).
+    """
+    from backend.app.core.automations_engine import auto_hunt_leads_for_project
+    return auto_hunt_leads_for_project(project_id, count=req.count, location=req.location or "")
+
+# -------------------------------------------------------------
+# 8. AUTOMATION 2: 3-STEP SMART DRIP SEQUENCES
+# -------------------------------------------------------------
+@router.get("/{project_id}/outreach/drip-sequence")
+def get_drip_sequence_endpoint(project_id: str, client_name: str = "Client"):
+    """
+    Generates tailored 3-step high-converting follow-up sequence
+    (Day 1 Intro, Day 3 Proof, Day 7 Breakup) for the active project.
+    """
+    from backend.app.core.automations_engine import generate_drip_sequence
+    return generate_drip_sequence(project_id, client_name=client_name)
+
+# -------------------------------------------------------------
+# 9. AUTOMATION 3: 1-CLICK GST INVOICE & UPI QR CODE GENERATOR
+# -------------------------------------------------------------
+class GenerateInvoiceRequest(BaseModel):
+    amount: float = 45000.0
+
+@router.post("/{project_id}/leads/{lead_id}/generate-invoice")
+def generate_invoice_endpoint(project_id: str, lead_id: str, req: GenerateInvoiceRequest):
+    """
+    Generates official GST invoice, dynamic UPI QR code,
+    and ready-to-send WhatsApp payment link for the client.
+    """
+    from backend.app.core.automations_engine import generate_invoice_for_lead
+    return generate_invoice_for_lead(project_id, lead_id, amount=req.amount)
+
+# -------------------------------------------------------------
+# 10. AUTOMATION 4: WEEKLY MARKET & COMPETITOR SPY
+# -------------------------------------------------------------
+@router.get("/{project_id}/market-spy")
+def get_market_spy_endpoint(project_id: str):
+    """
+    Returns weekly market intelligence, competitor pricing shifts,
+    and ranking signals for the active project.
+    """
+    from backend.app.core.automations_engine import get_market_spy_intelligence
+    return get_market_spy_intelligence(project_id)
