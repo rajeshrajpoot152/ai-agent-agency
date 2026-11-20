@@ -114,6 +114,11 @@ def handle_user_chat(
 
     is_followup_query = any(w in msg_lower for w in ["follow up", "followup", "follow-up", "kisko message karna", "aaj ka follow up", "pending leads", "inquiry status", "pipeline", "client status", "leads status"])
 
+    is_project_auto_create = any(w in msg_lower for w in [
+        "naya project", "new project", "project add", "naya client", "new client",
+        "add client", "naya tool", "new tool", "project build", "build project"
+    ])
+
 
     # Dynamic Agent Crafter & Channel Permissions Check
     crafter_result = detect_and_auto_create_agent(clean_msg)
@@ -205,6 +210,47 @@ def handle_user_chat(
                 f"- **Status:** 🟢 Live & Active\n"
                 f"- **All 25 Specialists Live:** Aarav, Vikram, Pooja, Arjun, Rohan, Kabir sabhi ab live GPT-4o se connected hain!"
             )
+
+    # -------------------------------------------------------------
+    # SCENARIO -0.5: AUTONOMOUS PROJECT / CLIENT CREATION & INGESTION
+    # -------------------------------------------------------------
+    elif is_project_auto_create:
+        add_human_step(execution_steps, "CEO_Orchestrator", "Project Ingestion", "Autonomous project analysis, skill equipping, and squad assignment.")
+        try:
+            from backend.app.api.routes_projects_hub import execute_auto_ingest
+            ingest_res = execute_auto_ingest(clean_msg)
+            if ingest_res.get("status") == "success":
+                p = ingest_res["project"]
+                squad = p.get("assigned_squad", [])
+                if isinstance(squad, str):
+                    try:
+                        squad = json.loads(squad)
+                    except Exception:
+                        squad = []
+                squad_str = ", ".join([f"{m.get('name', 'Specialist')} ({m.get('role', 'Lead')})" for m in squad])
+                
+                response_text = (
+                    f"✅ **Project '{p.get('brand_name')}' Autonomously Built & Activated!**\n\n"
+                    f"🔹 **Industry:** {p.get('industry')}\n"
+                    f"🔹 **Tagline:** {p.get('tagline')}\n"
+                    f"🔹 **Assigned 3D Squad:** {squad_str}\n"
+                    f"🔹 **Social Autopilot:** 4 multi-platform posts ready in queue.\n"
+                    f"🔹 **Data Isolation:** Enforced 100% (Zero cross-client leakage).\n\n"
+                    f"Aap top project selector me **{p.get('brand_name')}** par switch kar sakte hain. Bataiye, abhi iske liye pehle kya execute karein?"
+                )
+                deliverable = (
+                    f"# 🚀 Project Blueprint: {p.get('brand_name')}\n\n"
+                    f"- **Vertical:** {p.get('project_type')}\n"
+                    f"- **Industry:** {p.get('industry')}\n"
+                    f"- **Website:** {p.get('website_url')}\n"
+                    f"- **Value Proposition:** {p.get('value_proposition')}\n"
+                    f"- **Pricing Model:** {p.get('pricing_tier_summary')}\n"
+                    f"- **Max Allowed Discount:** {p.get('allowed_discount_max')}%"
+                )
+            else:
+                response_text = f"Error creating project: {ingest_res.get('message')}"
+        except Exception as e:
+            response_text = f"Technical Error building project: {str(e)}"
 
     # -------------------------------------------------------------
     # SCENARIO 0: WHATSAPP OUTREACH BATCH DISPATCH (LangGraph)

@@ -216,7 +216,120 @@ def call_multi_model(
 
 def synthesize_dynamic_message(context_text: str, system_prompt: str = "", category: str = "") -> str:
     cat_lower = (category or "").lower()
-    
+
+    # Special Case: Autonomous Project Ingestion & Auto-Builder
+    if cat_lower in ["auto_ingest_project", "project_ingest"]:
+        import json, re
+        txt = context_text.lower()
+        
+        # Determine industry & project type
+        proj_type = "tool_website"
+        ind = "Technology & SaaS"
+        b_name = "New Venture"
+
+        # Try to extract a clean name
+        name_match = re.search(r"['\"]([^'\"]+)['\"]", context_text)
+        if name_match:
+            b_name = name_match.group(1).strip()
+        else:
+            first_few = context_text.split("\n")[0].replace("User Input:", "").strip()
+            # Repeatedly clean common prompt command prefixes
+            for _ in range(3):
+                first_few = re.sub(r'^(?:mera ek|mera|hamara|client|new project|naya project|project add|add project|naya tool|add karo|karo|banao)[:\s]+', '', first_few, flags=re.I).strip()
+            b_name = first_few.split(",")[0].split("-")[0].strip()[:35]
+            if not b_name:
+                b_name = "Autonomous Client Venture"
+
+        if any(w in txt for w in ["real estate", "villa", "property", "plots", "flats", "builders", "housing", "land"]):
+            proj_type = "real_estate"
+            ind = "Real Estate & Luxury Properties"
+            squad = [
+                {"name": "Neha Patel", "role": "High-Ticket Closer & Deals", "avatar": "/assets/avatars/head_maya.jpg"},
+                {"name": "Rohan Das", "role": "Local SEO & Geo Citation Lead", "avatar": "/assets/avatars/head_charlie.jpg"},
+                {"name": "Pooja Verma", "role": "Visual Media & Ad Designer", "avatar": "/assets/avatars/head_maya.jpg"},
+                {"name": "Alex", "role": "Inquiry Concierge & Telephony", "avatar": "/assets/avatars/head_alex.jpg"}
+            ]
+        elif any(w in txt for w in ["jewelry", "jewellery", "gold", "diamond", "polki", "silver", "gems"]):
+            proj_type = "jewelry"
+            ind = "Luxury Jewelry & Fine Craftsmanship"
+            squad = [
+                {"name": "Pooja Verma", "role": "Luxury Brand & Creative Director", "avatar": "/assets/avatars/head_maya.jpg"},
+                {"name": "Neha Patel", "role": "VIP Client Closer", "avatar": "/assets/avatars/head_maya.jpg"},
+                {"name": "Ananya Roy", "role": "Social Growth & Influencer Lead", "avatar": "/assets/avatars/head_morgan.jpg"},
+                {"name": "Kabir Sen", "role": "Logistics & Security Lead", "avatar": "/assets/avatars/head_jordan.jpg"}
+            ]
+        elif any(w in txt for w in ["software", "it company", "agency", "tech", "web dev", "app dev", "solutions"]):
+            proj_type = "it_company"
+            ind = "IT Services & Software Engineering"
+            squad = [
+                {"name": "Arjun Sharma", "role": "Lead Tech Architect", "avatar": "/assets/avatars/head_charlie.jpg"},
+                {"name": "Kabir Sen", "role": "DevOps & Cloud Systems", "avatar": "/assets/avatars/head_jordan.jpg"},
+                {"name": "Neha Patel", "role": "Enterprise Closer", "avatar": "/assets/avatars/head_maya.jpg"},
+                {"name": "Shreya Adv.", "role": "Legal & SLA Compliance", "avatar": "/assets/avatars/head_casey.jpg"}
+            ]
+        elif any(w in txt for w in ["crm", "pipeline", "leads", "sales flow"]):
+            proj_type = "custom_crm"
+            ind = "Enterprise CRM & Revenue Ops"
+            squad = [
+                {"name": "Arjun Sharma", "role": "Database & API Architect", "avatar": "/assets/avatars/head_charlie.jpg"},
+                {"name": "Neha Patel", "role": "Sales Pipeline Specialist", "avatar": "/assets/avatars/head_maya.jpg"},
+                {"name": "Rishabh", "role": "SaaS Metrics & Billing", "avatar": "/assets/avatars/head_michael.jpg"}
+            ]
+        else:
+            proj_type = "tool_website"
+            ind = "B2B SaaS & Digital Product"
+            squad = [
+                {"name": "Arjun Sharma", "role": "Lead Product Architect", "avatar": "/assets/avatars/head_charlie.jpg"},
+                {"name": "Kavita Rao", "role": "CRO & Direct-Response Copywriter", "avatar": "/assets/avatars/head_maya.jpg"},
+                {"name": "Aryan Gupta", "role": "Technical SEO & AEO Specialist", "avatar": "/assets/avatars/head_charlie.jpg"},
+                {"name": "Priya Nair", "role": "VP Operations", "avatar": "/assets/avatars/head_morgan.jpg"}
+            ]
+
+        res_dict = {
+            "brand_name": b_name,
+            "project_type": proj_type,
+            "industry": ind,
+            "tagline": f"Premium high-performance solutions for {ind}.",
+            "value_proposition": f"Autonomous, end-to-end execution and verified pipeline velocity tailored for {b_name}.",
+            "target_audience": f"High-intent clients, investors and decision-makers in {ind}.",
+            "pricing_tier_summary": "Transparent custom milestone pricing. Max discount: 10%.",
+            "allowed_discount_max": 10,
+            "primary_color": "#6366F1",
+            "secondary_color": "#06B6D4",
+            "assigned_squad": squad,
+            "social_posts": [
+                {
+                    "platform": "LinkedIn",
+                    "post_theme": f"Industry Shift & Innovation in {ind}",
+                    "post_copy": f"How {b_name} is transforming {ind} with automated operational precision.\n\nDiscover how we deliver uncompromised quality and high-speed execution.",
+                    "hashtags": f"#{ind.replace(' ', '')} #Innovation #Leadership",
+                    "canva_prompt": f"Modern minimalist executive graphic showcasing {b_name} value proposition in {ind}."
+                },
+                {
+                    "platform": "Twitter / X",
+                    "post_theme": "High-Value Insight",
+                    "post_copy": f"Speed and quality don't have to be a trade-off in {ind}.\n\nHere is how {b_name} executes 10x faster without compromising standards ⚡",
+                    "hashtags": f"#{ind.replace(' ', '')} #Growth",
+                    "canva_prompt": "Clean infographic card with key performance metrics."
+                },
+                {
+                    "platform": "Instagram Carousel",
+                    "post_theme": "Behind the Craft & Quality",
+                    "post_copy": f"Inside the craftsmanship of {b_name}. Every detail engineered for excellence.\n\nTap the link in bio to explore.",
+                    "hashtags": f"#{ind.replace(' ', '')} #Aesthetics #Excellence",
+                    "canva_prompt": f"3D aesthetic editorial visual showcasing {b_name} branding."
+                },
+                {
+                    "platform": "Facebook",
+                    "post_theme": "Customer Case & Community",
+                    "post_copy": f"Delivering measurable results for our clients at {b_name}. Get in touch today for an exclusive consultation.",
+                    "hashtags": f"#{ind.replace(' ', '')} #ClientSuccess",
+                    "canva_prompt": "Customer success banner with strong call-to-action button."
+                }
+            ]
+        }
+        return json.dumps(res_dict)
+
     # 0. If this is a conversation, handle conversationally!
     if cat_lower == "conversation":
         ctx_l = context_text.lower()
