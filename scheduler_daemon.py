@@ -1,8 +1,29 @@
 import time
 from datetime import datetime
-from core.db import query_db
-from core.outreach_engine import run_daily_outreach
-from core.self_learning import run_self_training_reflection
+from backend.app.core.database import query_db
+from backend.app.graph.workflow import agency_graph
+
+def run_outreach_batch():
+    """Runs a batch through LangGraph multi-agent workflow."""
+    initial_state = {
+        "campaign_id": "",
+        "campaign_name": "",
+        "campaign_status": "Active",
+        "daily_quota": 5,
+        "sent_today": 0,
+        "leads_to_process": [],
+        "current_lead": None,
+        "generated_message": None,
+        "qa_approved": False,
+        "qa_feedback": None,
+        "retry_count": 0,
+        "learned_insights": [],
+        "workflow_status": "running",
+        "logs": []
+    }
+    config = {"configurable": {"thread_id": f"daemon_batch_{datetime.now().strftime('%Y%m%d_%H%M%S')}"}}
+    result = agency_graph.invoke(initial_state, config=config)
+    return result
 
 def run_daemon_loop():
     print("\n" + "="*65)
@@ -27,18 +48,15 @@ def run_daemon_loop():
 
             # Dynamic check on DB status
             if status.lower() in ['paused', 'stopped']:
-                # Agent is sleeping/paused
                 time.sleep(10)
                 continue
 
             # Check if scheduled time reached and hasn't run today
             if scheduled_time and (now_time >= scheduled_time) and (last_trigger_date != today_str):
-                print(f"\n⏰ [SCHEDULE TRIGGER] Time is {now_time.strftime('%H:%M:%S')}. Triggering daily outreach batch...")
-                run_daily_outreach(force=False)
+                print(f"\n⏰ [SCHEDULE TRIGGER] Time is {now_time.strftime('%H:%M:%S')}. Triggering LangGraph outreach batch...")
+                res = run_outreach_batch()
+                print(f"✅ Batch completed. Status: {res.get('workflow_status')}, Processed: {res.get('sent_today', 0)}")
                 last_trigger_date = today_str
-                
-                # Run autonomous self-training loop after outreach
-                run_self_training_reflection()
 
             time.sleep(30) # Check every 30 seconds
         except KeyboardInterrupt:
